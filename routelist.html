@@ -1,0 +1,83 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>routelist</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link href="css/ratchet.min.css" rel="stylesheet">
+    <link href="css/spstyles.css" rel="stylesheet">
+	<script src="js/ratchet.min.js"></script>
+	<script src="js/menu-bottom.js"></script>     
+  </head>
+  <body>
+
+	<header class="bar bar-nav">
+
+  	  	<a class="icon icon-left-nav pull-left" href="index.html" data-ignore="push"></a>
+      	<h1 class="title">Список маршрутов</h1>
+
+	</header>
+
+    <div class="content">
+
+        <div id="info" class="content-padded"></div>
+        <ul id="list" class="table-view"></ul>
+
+    </div>
+
+	<div id="menu-bottom"></div>
+	
+ 	<script type="text/javascript">
+
+      routelist = [];
+
+      var key ="";
+
+      for (let i=0; i < localStorage.length; i++) {  
+
+        key = localStorage.key(i); 
+
+        if (key.substr(0,7) == "#_route" ) {
+
+          routelist.push (JSON.parse(localStorage.getItem(key)));
+
+        }
+
+      }  
+
+      for (let i=0; i < routelist.length; i++) {
+   
+        document.getElementById('list').innerHTML += '<li>' + routelist[i].name + '<br>' + routelist[i].date + '<br>' + routelist[i].descr + '<br></li>';
+    
+      }
+
+      document.getElementById("list").onclick = function(event) {
+        
+        if (!event) {
+          event = window.event;
+          event.target = window.srcElement;
+        };
+        
+        var list = this.getElementsByTagName("li");
+
+        for (let i=0; i < list.length; i++) {
+          
+          if (list[i]==event.target) {
+
+            localStorage['routeindex'] = i.toString();
+
+            document.location.href = "route.html";
+          
+            return;
+
+          };
+        }
+      }; 
+
+    </script>
+
+  </body>
+
+</html>

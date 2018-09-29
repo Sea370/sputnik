@@ -1,0 +1,120 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>route</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link href="css/ratchet.min.css" rel="stylesheet">
+    <link href="css/spstyles.css" rel="stylesheet">
+    <script src="js/ratchet.min.js"></script>
+    <script src="js/menu-bottom.js"></script>
+  </head>
+  
+  <body>
+
+	<header class="bar bar-nav">
+
+  	  	<a class="icon icon-left-nav pull-left" href="routelist.html" data-ignore="push"></a>
+  	  	<a class="icon icon-edit pull-right" href="routeedit.html" data-ignore="push"></a>
+      	<h1 class="title">Маршрут</h1>
+
+	</header>
+    
+   	<div class="content">
+
+    	<div id="info" class="content-padded"></div>
+      	<ul id="list" class="table-view"></ul>
+
+    </div>
+
+    <div id="menu-bottom"></div>
+
+    <script type="text/javascript">
+
+      let Routekey = "#_route" + localStorage['routeindex'];
+
+	  let Route = JSON.parse(localStorage[Routekey]);
+
+
+	  if (Route.e == true) {
+
+	  	document.getElementById('info').innerHTML = Route.name + '<br>' + Route.date;
+
+	    document.getElementById('list').innerHTML = "";
+
+	    var content = "";
+
+	    for (let i=0; i < Route.list.length; i++) {
+
+	      content += '<li>' + Route.list[i].name + '<br>' + Route.list[i].postal_address + '<br></li>';
+	
+		  document.getElementById('list').innerHTML = content;
+
+		      } 	
+	  }
+
+	  else {
+
+	    document.getElementById('info').innerHTML = Route.name + '<br>' + Route.date;
+
+	    document.getElementById('list').innerHTML = "";
+
+	    for (let i=0; i < Route.list.length; i++) {
+	 
+	      let url = 'https://staging-api.naviaddress.com/api/v1.5/Addresses/' + Route.list[i].naddr;
+
+		    fetch(url).then((res1)=> 
+		      res1.json().then((res2)=>{
+
+        	    Route.list[i].name = res2.result.name;
+
+        	    Route.list[i].postal_address = res2.result.postal_address;
+
+        	    Route.list[i].lat = res2.result.point.lat;
+
+        	    Route.list[i].lng = res2.result.point.lng;
+
+			    document.getElementById('list').innerHTML += '<li>' + 
+
+                  Route.list[i].name + '<br>' + Route.list[i].postal_address + '<br></li>';
+
+         	    localStorage[Routekey] = JSON.stringify(Route);
+
+		      })
+
+		    );
+	    }
+	  }
+
+//Определение индекса позиции в списке
+
+  	  document.getElementById("list").onclick = function(event) {
+   		if (!event) {
+    	  event = window.event;
+    	  event.target = window.srcElement;
+   		};
+   	  
+   	    var list = this.getElementsByTagName("li");
+
+   	    for (let i=0; i < list.length; i++) {
+    		
+    	  if (list[i]==event.target) {
+
+     		localStorage['itemindex'] = i.toString();
+
+     		document.location.href = "place.html";
+  	   	
+  	   	    return;
+
+    	  };
+   	    }
+  	  };
+  	  
+
+    </script>
+
+  </body>
+
+</html>

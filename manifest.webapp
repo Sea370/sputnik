@@ -1,0 +1,19 @@
+{
+  "version": "0.1.0",
+  "name": "sPutnik",
+  "description": "",
+  "launch_path": "/index.html",
+  "icons": {
+    "60": "/img/icons/icon60x60.png",
+    "86": "/img/icons/icon86x86.png",
+  },
+  "developer": {
+    "name": "Sergey Ananiev",
+    "url": "http://example.com"
+  },
+  "type": "",
+  "permissions": {},
+  "installs_allowed_from": [
+    "*"
+  ],
+}

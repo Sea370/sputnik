@@ -1,0 +1,171 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>place</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link href="css/ratchet.min.css" rel="stylesheet">
+    <script src="js/ratchet.min.js"></script>
+    <script src="js/menu-bottom.js"></script>
+  </head>
+
+  <body>
+
+	<header class="bar bar-nav">
+
+  	  <a class="icon icon-left-nav pull-left" href="route.html" data-ignore="push"></a>
+  	  <a class="icon icon-edit pull-right" href="placeedit.html" data-ignore="push"></a>
+      <h1 class="title">Место назначения</h1>
+
+	</header>
+
+    <div class="content">
+
+    <div class="card">
+
+	  <p>Название: <span id="name"></span></p>
+	  <p>Адрес: <span id="address"></span></p>
+	  <p>Время: <span id="time"></span></p>
+	  <p>Контакт: <span id="contact"></span></p>
+	  <p>Тел.: <span id="tel"></span></p>
+	  <p>E-mail: <span id="email"></span></p>
+
+	</div>
+
+	  <div id="buttons">
+
+	    <button class="btn" onclick="fn1();">Звонок</button>
+	    <button class="btn" onclick="fn2();">Смс</button>
+	    <button class="btn" onclick="fn3();">Email</button>
+	    <button class="btn" onclick="fn4();">Navi</button>
+
+	  </div>
+
+	</div>
+
+    <div id="menu-bottom"></div>
+	
+	<script type="text/javascript">
+
+	  var Routeindex = "#_route" + localStorage['routeindex'];
+
+	  var Route = JSON.parse(localStorage[Routeindex]);
+
+      var i = Number(localStorage['itemindex']);
+
+      if (Route.list[i].e == true) {
+
+      	document.getElementById('name').innerHTML = Route.list[i].name;
+
+      	document.getElementById('address').innerHTML = Route.list[i].postal_address;
+
+      	document.getElementById('time').innerHTML = Route.list[i].time;
+
+      	document.getElementById('contact').innerHTML = Route.list[i].contact;
+
+      	document.getElementById('tel').innerHTML = Route.list[i].tel;
+
+      	document.getElementById('email').innerHTML = Route.list[i].email;
+
+      }
+		 
+      else {
+
+	    let url = 'https://staging-api.naviaddress.com/api/v1.5/Addresses/' + Route.list[i].naddr;
+	
+	    fetch(url).then((res1)=>
+	      res1.json().then((res2)=>{
+				
+		    document.getElementById('name').innerHTML = res2.result.name;
+			
+		    document.getElementById('address').innerHTML = res2.result.postal_address;
+	
+		  })
+	    );	 
+		
+	    if (Route.list[i].time !== undefined) {
+
+		  document.getElementById('time').innerHTML = Route.list[i].time;
+
+	    }
+
+	    if (Route.list[i].contact !== undefined) {
+
+	      document.getElementById('contact').innerHTML = Route.list[i].contact;
+
+	    }
+
+	    if (Route.list[i].tel !== undefined) {
+
+	      document.getElementById('tel').innerHTML = Route.list[i].tel;
+
+	    }
+
+	    if (Route.list[i].email !== undefined) {
+		
+	      document.getElementById('email').innerHTML = Route.list[i].email;
+
+	    }
+
+	  }
+
+	  function fn1() {
+
+		if (Route.list[i].tel !== undefined) {
+
+		  document.location.href = "tel:" + Route.list[i].tel;
+
+		}
+
+		else {
+
+		  document.location.href = "tel:";
+
+		  }
+
+	  }
+
+	  function fn2() {
+
+	    if (Route.list[i].tel !== undefined) {
+
+		  document.location.href = "smsto:" + Route.list[i].tel;
+
+	    }
+
+	    else {
+
+	      document.location.href = "smsto:";
+
+	    }
+
+	  }
+
+	  function fn3() {
+
+		if (Route.list[i].email !== undefined) {
+
+		  document.location.href = "mailto:" + Route.list[i].email;
+
+		}
+
+		else {
+
+		  document.location.href = "mailto:";
+
+		}
+	  }
+
+	  function fn4() {
+
+	  	document.location.href = "https://naviaddress.com/" + Route.list[i].naddr;
+
+	  }
+
+	</script>
+
+  </body>
+
+</html>

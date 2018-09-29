@@ -1,0 +1,93 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <title>settings</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link href="css/ratchet.min.css" rel="stylesheet">
+    <script src="js/ratchet.min.js"></script>
+    <script src="js/menu-bottom.js"></script> 
+    <script src="js/moment.min.js"></script>
+  </head>
+ <body>
+
+    <header class="bar bar-nav">
+      <h1 class="title">Настройки приложения</h1>
+    </header>
+
+    <div class="content">
+ 		
+ 	  <div class="card">
+      <form name="fset" class="input-group">
+        Начальное время (час:мин):<input type="text" name="start_time">
+        Длительность встречи (мин):<input type="text" name="meetingtime">
+  		Скорость передвижения (км/ч):<input type="text" name="speed">
+  		Стоимость проезда за км (руб):<input type="text" name="cost">
+  		Cтоимость подачи машины (руб):<input type="text" name="filingcost"> 
+	    </form>
+
+	    <button id="btnset" class="btn btn-positive btn-block" onclick="set();">Принять</button>
+	  </div>
+
+	</div>
+
+	<div id="menu-bottom"></div>
+
+  <script type="text/javascript">
+
+    if (localStorage.getItem('start_time')) {
+
+      document.fset.start_time.value = localStorage['start_time'];
+
+    }
+
+    if (localStorage.getItem('meetingtime')) {
+
+      document.fset.meetingtime.value = Number(localStorage['meetingtime']);
+
+    }
+
+    if (localStorage.getItem('speed')) {
+
+      document.fset.speed.value = Number(localStorage['speed']);
+
+    }
+
+    if (localStorage.getItem('cost')) {
+
+      document.fset.cost.value = Number(localStorage['cost']);
+
+    }
+
+    if (localStorage.getItem('filingcost')) {
+
+      document.fset.filingcost.value = Number(localStorage['filingcost']);
+
+    }
+
+    function set() {
+
+      var t_diff = document.fset.start_time.value.split(':');
+
+      var start_time = moment(new Date(0, 0, 0, 0, 0, 0)).add(t_diff[0], 'h').add(t_diff[1], 'm').format('HH:mm');
+
+      localStorage['start_time'] = start_time;
+
+      localStorage['meetingtime'] = parseInt(document.fset.meetingtime.value);
+
+      localStorage['speed'] = parseInt(document.fset.speed.value);
+
+      localStorage['cost'] = parseInt(document.fset.cost.value);
+
+      localStorage['filingcost'] = parseInt(document.fset.filingcost.value);
+
+      document.getElementById('btnset').disabled = true;
+
+    }
+
+  </script>
+
+ </body>
+  
+</html>

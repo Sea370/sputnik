@@ -1,0 +1,106 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>routenew</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link href="css/ratchet.min.css" rel="stylesheet">
+    <link href="css/spstyles.css" rel="stylesheet">
+    <script src="js/ratchet.min.js"></script>
+    <script src="js/menu-bottom.js"></script> 
+  </head>
+  <body>
+
+	<header class="bar bar-nav">
+
+  		<a class="icon icon-left-nav pull-left" href="index.html" data-ignore="push"></a>
+    	<h1 class="title">Добавить маршрут</h1>
+
+	</header>
+
+    <div class="content">
+      
+    	<p class="content-padded">Название и дата маршрута</p>
+
+    	<form name="f1">
+  			<input type="text" placeholder="Название" name="inpname">
+  			<input type="text" placeholder="Дата" name="inpdate">
+  			<textarea rows="3" placeholder="Описание" name="txtdescr"></textarea>
+ 			<textarea rows="5" placeholder="Ввести Navi-адреса" name="txtlist"></textarea>
+ 		</form>
+
+    </div>
+
+		<div class="bar bar-standard bar-footer-secondary">
+  			<button id="btn" class="btn btn-block" onClick="btnClick();">Принять</button>
+		</div>
+
+  	<div id="menu-bottom"></div>
+
+    <script type="text/javascript">
+
+      function btnClick() {
+
+        var Routenumber;
+
+		if (localStorage.getItem('routenumber')) {
+
+		  Routenumber = Number(localStorage['routenumber']) + 1;
+
+		  localStorage['routenumber'] = Routenumber;
+
+		}
+
+		else {
+
+		  Routenumber = 0;
+
+		  localStorage['routenumber'] = "0";
+		
+		}
+
+    	var RouteId = "#_route" + Routenumber;
+
+    	newRoute = {};
+
+		newRoute.name = document.f1.inpname.value;
+
+		newRoute.date = document.f1.inpdate.value;
+
+		newRoute.descr = document.f1.txtdescr.value;
+
+		newRoute.list = [];
+
+
+		var naddr = document.f1.txtlist.value.split('\n');
+
+
+		  for (var i=0; i < naddr.length; i++) {
+
+		    newRoute.list[i] = {};
+
+			newRoute.list[i].naddr = naddr[i];
+
+			newRoute.list[i].name = "";
+
+			newRoute.list[i].postal_address = "";
+
+			newRoute.list[i].lat = "";
+
+			newRoute.list[i].lng = "";
+				
+		  }
+
+		  localStorage[RouteId] = JSON.stringify(newRoute);
+
+		  document.getElementById('btn').disabled = true;
+
+		} 
+
+    </script>
+
+  </body>
+
+</html>
